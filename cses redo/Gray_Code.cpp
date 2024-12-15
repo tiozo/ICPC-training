@@ -69,9 +69,22 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+    vector<string> gray_code = {"0", "1"}; 
+    for (int i = 2; i <= n; ++i) { 
+        vector<string> current_gray_code; 
+    // Add 0 to the front of each code in the current list 
+        for (const string &code : gray_code) { current_gray_code.push_back("0" + code); } 
+    // Add 1 to the front of each code in the current list in reverse order 
+        for (auto it = gray_code.rbegin(); it != gray_code.rend(); ++it) { 
+            current_gray_code.push_back("1" + *it); 
+        } 
+        gray_code = current_gray_code;
+    }
+    for (auto e: gray_code) {
+        cout << e << '\n';
+    }
 }
-
 /*
 	
 */

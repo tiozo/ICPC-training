@@ -69,11 +69,27 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+    vector<ll> res;
+
+    for (ll i = 1; i <= n; ++i) {
+        ll total = (i * i) * (i * i - 1) / 2;
+        ll attack = 4 * (i - 1) * (i - 2);
+        res.push_back(total - attack);
+    }
+
+    for (ll e: res) {
+        cout << e << '\n';
+    }
 }
 
 /*
-	
+total moves: 
+k^2 * (k^2 - 1) / 2;
+
+2×(𝑘−1)(𝑘−2): Moves that are 2 steps vertically and 1 step horizontally.
+
+2×(𝑘−2)(𝑘−1): Moves that are 2 steps horizontally and 1 step vertically.
 */
 
 int32_t main() {

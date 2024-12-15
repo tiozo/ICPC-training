@@ -69,7 +69,9 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int a, b, c; cin >> a >> b >> c; 
+    put((abs(b - c) % 2 == 0), (abs(a - c) % 2 == 0), (abs(a - b) % 2 == 0));
+    cout << '\n';
 }
 
 /*
@@ -87,10 +89,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

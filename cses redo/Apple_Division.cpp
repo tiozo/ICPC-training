@@ -69,7 +69,23 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+    vector<int> a(n);
+    for (int &e: a) cin >> e;
+    ll sum = 0, sSum = 0;
+    ll dist = inf;
+    for (int i = 0; i < n; ++i) 
+        sum += a[i];
+    for (int i = 0; i < 1 << n; ++i) {
+        sSum = 0;
+        for (int bits = 0; bits < n; ++bits) {
+            if (i & (1 << bits)) 
+                sSum += a[bits];
+        }
+        // cout << sSum << '\n';
+        ckmin(dist, abs((sum - sSum) - sSum));
+    }
+    cout << dist << '\n';
 }
 
 /*

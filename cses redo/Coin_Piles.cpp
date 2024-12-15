@@ -69,11 +69,22 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int a, b; see(a, b);
+    if (a > b) swap(a, b);
+    if ((a + b) % 3 == 0 && 2 * a >= b && 2 * b >= a) {
+        cout << "YES\n"; return;
+    }
+    cout << "NO\n";
 }
 
 /*
-	
+	b > a
+    b % a = 0 (b / 2 = a) -> YES
+    
+    2 * a >= b (can use 2 mutiples to lower the quantity)
+    2 * b >= a (same as above)
+    
+    
 */
 
 int32_t main() {
@@ -87,10 +98,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

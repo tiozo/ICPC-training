@@ -68,8 +68,17 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
+void backtrack(int a, int b, int c, int n) {
+    if (n == 0) return;
+    backtrack(a, c, b, n - 1);
+    cout << a << ' ' << c << '\n';
+    backtrack(b, a, c, n - 1);
+}
+
 void solve() {
-	
+	int n; cin >> n;
+    cout << (1 << n) - 1 << '\n';
+    backtrack(1, 2, 3, n);
 }
 
 /*

@@ -69,7 +69,41 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+	vector<int> cnt(1e5 + 100, 0);
+	int mxVal = 0;
+	for (int i = 0; i < n; ++i) {
+		int x; cin >> x;
+		ckmax(mxVal, x);
+		++cnt[x];
+	}
+	vector<int> g(mxVal + 100, 0), h(mxVal + 100, 0);
+	/// numbers of value c.
+	vector<int> up(mxVal + 100, 0);
+	int pre = 0;
+	for (int i = mxVal; i >= 0; --i) {
+		up[i] = pre;
+		pre += cnt[i];
+	}
+	// cerr << mxVal;
+	ll ans = 0;
+	vector<ll> dp(mxVal + 10, 0);
+	for (int i = mxVal; i >= 1; --i) {
+		// cerr << i << ' ';
+		ll pre1 = 0, pre2 = 0;
+		for (int j = i; j <= mxVal; j += i) {
+			// cerr << j << ' ';
+			pre2 += (pre1 * cnt[j] + 1ll * cnt[j] * (cnt[j] - 1) / 2) * up[j];
+			pre2 += 1ll * cnt[j] * (cnt[j] - 1) * (cnt[j] - 2) / 6;
+			pre2 += pre1 * cnt[j] * (cnt[j] - 1) / 2;
+			dp[i] -= dp[j];
+			pre1 += cnt[j];
+		}
+		// cerr << '\n';
+		dp[i] += pre2;
+		ans += dp[i] * i;
+	}
+	cout << ans << '\n';
 }
 
 /*
@@ -87,10 +121,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

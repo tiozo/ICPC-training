@@ -69,7 +69,18 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; string s;
+    see(n, s);
+    for (int i = 0; i < n - 2; ++i) {
+        if (s[i] == s[i + 1] && s[i + 1] == s[i + 2]
+            && s[i] == '.') {
+                cout << 2 << '\n'; return;
+            }
+    }
+    int cnt = 0;
+    for (int i = 0; i < n; ++i) 
+        if (s[i] == '.') ++cnt;
+    cout << cnt << '\n';
 }
 
 /*
@@ -87,10 +98,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

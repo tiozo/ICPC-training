@@ -69,7 +69,18 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	string s; see(s);
+    int cur = 0, ans = 0;
+    char prev = s.front();
+    for (auto c: s) {
+        if (c == prev) {
+            ++cur;
+        } else {
+            prev = c; cur = 1;
+        }
+        ckmax(ans, cur);
+    }
+    cout << ans << '\n';
 }
 
 /*

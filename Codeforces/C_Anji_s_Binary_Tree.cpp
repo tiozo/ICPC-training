@@ -68,12 +68,37 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
+vector<vector<pair<int, char>>> adj;
+
+int dfs(int u, int prev, const string &s) {
+    if (sz(adj[u]) == 0) return 0;
+    int ans = inf;
+    for (auto [v, c]: adj[u]) {
+        if (v != prev) {
+            ckmin(ans, dfs(v, u, s) + 1 - (int)(s[u] == c));
+        }   
+    } 
+    return ans;
+}
+
 void solve() {
-	
+    int n; see(n);
+    adj.clear(), adj.resize(n + 1);
+    string s; see(s);
+    for (int i = 0; i < n; ++i) {
+        int L, R; cin >> L >> R;
+        if (L != 0)
+            adj[i].push_back({L - 1, 'L'});
+        if (R != 0)
+            adj[i].push_back({R - 1, 'R'});
+    }
+    cout << dfs(0, -1, s) << '\n';
 }
 
 /*
-	
+	LRRU
+    5 -> 0 -> 0 -> U -> 1
+
 */
 
 int32_t main() {
@@ -87,10 +112,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

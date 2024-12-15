@@ -69,7 +69,33 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	string s; cin >> s;
+    unordered_map<char, int> cnt;
+    for (auto c: s) {
+        ++cnt[c];
+    }
+    string fHalf, sHalf, middle;
+    int stopper = 0;
+    for (auto it: cnt) {
+        int x = it.second; 
+        if (x % 2) {
+            ++stopper;
+            if (stopper == 2) {
+                cout << "NO SOLUTION\n"; return;
+            }
+            while (x) {
+                middle += it.first;
+                --x;
+            }
+        }
+        int times = x / 2;
+        while (times) {
+            fHalf += it.first;
+            --times;
+        }
+    }
+    sHalf = fHalf; reverse(all(sHalf));
+    cout << fHalf + middle + sHalf << '\n';
 }
 
 /*

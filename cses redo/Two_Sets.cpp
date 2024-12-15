@@ -69,11 +69,45 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; see(n);
+    ll sum = 0;
+    for (int i = 1; i <= n; ++i) sum += i;
+    if (sum % 2) {
+        cout << "NO\n"; return;
+    }
+    cout << "YES\n";
+    vector<int> a, b;
+    vector<int> vis(n + 1, 0);
+    ll firstHalf = sum / 2;
+    for (int i = n; i >= 1; --i) {
+        if (firstHalf - i < 0) continue;
+        vis[i] = true;
+        a.push_back(i);
+        firstHalf -= i;
+    }
+    for (int i = n - 1; i >= 1; --i) {
+        if (vis[i] == 0) 
+            b.push_back(i);
+    }
+    cout << sz(a) << '\n';
+    for (int e: a) cout << e << ' ';
+    cout << '\n';
+    cout << sz(b) << '\n';
+    for (int e: b) cout << e << ' ';
+    cout << '\n';
 }
 
 /*
-	
+	8 
+    1 2 3 4 8 
+    5 6 7 
+    3 -> YES
+    4 -> NO
+    5 -> YES
+    1 5 2 
+    4 3 
+    7 6 1
+    2 3 4 5
 */
 
 int32_t main() {

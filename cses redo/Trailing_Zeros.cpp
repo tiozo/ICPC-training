@@ -69,11 +69,17 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+    int ans = 0;
+    for (int i = 5; i <= n; i *= 5) 
+        ans += floor(n / i);
+    cout << ans << '\n';
 }
 
 /*
-	
+	5 
+    25
+    50
 */
 
 int32_t main() {

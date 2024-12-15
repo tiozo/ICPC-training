@@ -69,7 +69,16 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	string s; cin >> s;
+    vector<string> a;
+    sort(all(s));
+    do {
+        a.push_back(s);
+    } while (next_permutation(all(s)));
+    cout << sz(a) << '\n';
+    for (auto c: a) {
+        cout << c << '\n';
+    }
 }
 
 /*

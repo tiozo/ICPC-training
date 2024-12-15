@@ -69,11 +69,30 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int x, y; see(x, y);
+    if (x > y) {
+        if (x % 2) 
+            --x, cout << (1ll * x * x + y) << '\n';
+        else 
+            cout << 1ll * x * x - y + 1 << '\n';
+    } else {
+        if (y % 2) 
+            cout << (1ll * y * y - x + 1) << '\n';
+        else 
+            --y, cout << (1ll * y * y + x) << '\n';
+    }
 }
 
 /*
-	
+	1 - 1, 1 
+    2 - 1, 2 
+    3 - 2, 2 
+    4 - 2, 1
+    5 - 3, 1
+    6 - 3, 2
+    7 - 3, 3
+    8 - 2, 3
+    9 - 3, 1
 */
 
 int32_t main() {
@@ -87,10 +106,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

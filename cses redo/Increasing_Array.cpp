@@ -69,7 +69,17 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; see(n);
+    vector<int> a(n);
+    for (int &e: a) see(e);
+    ll ans = 0, prev = a.front();
+    for (int e: a) {
+        if (prev > e)
+            ans += prev - e;
+        else 
+            prev = e;
+    }
+    cout << ans << '\n';
 }
 
 /*

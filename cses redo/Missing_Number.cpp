@@ -69,7 +69,19 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; cin >> n;
+    vector<int> a(n, -1); 
+    for (int &e: a) cin >> e;
+    sort(all(a));
+    int start = 1;
+    for (int e: a) {
+        if (e == -1) continue;
+        if (start++ != e) {
+            --start;
+            break;
+        }
+    }
+    cout << start << '\n';
 }
 
 /*

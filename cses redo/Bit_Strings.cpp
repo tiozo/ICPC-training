@@ -45,15 +45,16 @@ bool ckmax(T &a, T b) {
 	return 0;
 }
 
-ll binpow(ll a, ll b) {
-	ll res = 1;
-	while (b) {
-		if (b & 1)
-			res *= a;
-		b >>= 1;
-		a *= a;
-	}
-	return res;
+ll binpow(ll a, ll b, ll m = mod) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
 }
 
 void add(ll &a, ll b) {
@@ -69,11 +70,12 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	ll n; cin >> n;
+    cout << binpow(2, n) << '\n';
 }
 
 /*
-	
+
 */
 
 int32_t main() {

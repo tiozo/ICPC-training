@@ -69,7 +69,26 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n; see(n);
+    vector<int> a;
+    int mxEven = (n % 2 ? n - 1 : n);
+    int mxOdd = (n % 2 ? n : n - 1);
+    while (mxEven > 0) {
+        a.push_back(mxEven); mxEven -= 2;
+    }
+    while (mxOdd > 0) {
+        a.push_back(mxOdd); mxOdd -= 2;
+    }
+    if (n == 4) {
+        cout << "2 4 1 3\n"; return;
+    }
+    for (int i = 1; i < n; ++i) {
+        // cout << a[i] << ' ';
+        if (abs(a[i] - a[i - 1]) <= 1) {
+            cout << "NO SOLUTION\n"; return;
+        }
+    }
+    for (auto e: a) cout << e << ' ';
 }
 
 /*
