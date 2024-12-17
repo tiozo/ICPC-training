@@ -69,48 +69,34 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	ll n, l, r;
-    cin >> n >> l >> r;
-    vector<ll> a(n);
-    for (ll &e : a) cin >> e;
-
-    sort(all(a));
-
-    bool flag = false;
-    for (int i = 0; i < n - 1; ++i) 
-        if (a[i] == a[i + 1]) flag = true;
-    
-    if (flag) {
-        if (l == 0) cout << "YES\n"; 
-        else cout << "NO\n";
-        return;
+	int n; cin >> n;
+    vector<int> a(n);
+    for (int &e: a) cin >> e;
+    vector<int> vis(n + 1, 0);
+	vector<int> b;
+	for (int e: a) {
+		if (!vis[e]) {
+			b.push_back(e);
+			++vis[e];
+		}
+	}
+    for (int e: b) {
+        cout << e << ' ';
     }
-
-    ll prod = 1;
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            prod *= a[i] ^ a[j];
-            if (prod == 0) {
-                if (l == 0) {
-                    cout << "YES\n";
-                } else 
-                    cout << "NO\n";
-                return;
-            } else 
-            if (prod > r) {
-                cout << "NO\n"; return;
-            }
-        }
-    }
-    if (prod >= l && prod <= r) {
-        cout << "YES\n";
-    } else {
-        cout << "NO\n";
-    }
+	for (int i = 1; i <= n; ++i) {
+		if (!vis[i])
+			cout << i << ' ';
+	}
+    cout << '\n';
 }
 
 /*
-	
+	4 5 5 5 1 1 2 2 1
+
+    4 5 5 1 1 2 2 2 1
+
+    1 2 3 5 5 3 6
+    1 2 3 5 5 6 6
 */
 
 int32_t main() {
@@ -126,6 +112,7 @@ int32_t main() {
 
 	int tc; cin >> tc;
 	while (tc--) {
+        // DEBUG
 		solve();
 	}
 

@@ -69,43 +69,39 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	ll n, l, r;
-    cin >> n >> l >> r;
-    vector<ll> a(n);
-    for (ll &e : a) cin >> e;
+	int n, m, q; see(n, m, q);
+    vector<int> a(n), b(m);
+    vector<bool> mpA(2 * n + 10, 0), mpB(2 * m + 10, 0);
+    ll sumA = 0, sumB = 0;
+    for (int &e: a) see(e), sumA += e, mpA[n + e] = 1;
+    for (int &e: b) see(e), sumB += e, mpB[m + e] = 1;
 
-    sort(all(a));
-
-    bool flag = false;
-    for (int i = 0; i < n - 1; ++i) 
-        if (a[i] == a[i + 1]) flag = true;
-    
-    if (flag) {
-        if (l == 0) cout << "YES\n"; 
-        else cout << "NO\n";
-        return;
-    }
-
-    ll prod = 1;
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            prod *= a[i] ^ a[j];
-            if (prod == 0) {
-                if (l == 0) {
-                    cout << "YES\n";
-                } else 
-                    cout << "NO\n";
-                return;
-            } else 
-            if (prod > r) {
-                cout << "NO\n"; return;
+    auto Test = [&](int x, int y) {
+        auto need_a = sumA - x;
+        auto need_b = sumB - y;
+        if (abs(need_a) <= n && mpA[need_a + n]) {
+            if (abs(need_b) <= m && mpB[need_b + m]) {
+                return true;
             }
         }
-    }
-    if (prod >= l && prod <= r) {
-        cout << "YES\n";
-    } else {
-        cout << "NO\n";
+        return false;
+    };
+
+    while (q--) {
+        bool flag = false;
+        int x; see(x);
+        for (int d = 1;1ll * d * d <= abs(x); ++d) {
+            if (x % d) continue;
+            flag |= Test(d, x / d);
+            flag |= Test(-d, -(x / d));
+            flag |= Test(x / d, d);
+            flag |= Test(-(x / d), -d);
+        }
+        if (flag) {
+            cout << "YES\n";
+        } else {
+            cout << "NO\n";
+        }
     }
 }
 
@@ -124,10 +120,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	int tc; cin >> tc;
-	while (tc--) {
+	// int tc; cin >> tc;
+	// while (tc--) {
 		solve();
-	}
+	// }
 
 	return 0;
 }

@@ -68,49 +68,51 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
-void solve() {
-	ll n, l, r;
-    cin >> n >> l >> r;
-    vector<ll> a(n);
-    for (ll &e : a) cin >> e;
+vector<vector<int>> adj;
+vector<int> vis;
 
-    sort(all(a));
-
-    bool flag = false;
-    for (int i = 0; i < n - 1; ++i) 
-        if (a[i] == a[i + 1]) flag = true;
-    
-    if (flag) {
-        if (l == 0) cout << "YES\n"; 
-        else cout << "NO\n";
-        return;
-    }
-
-    ll prod = 1;
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            prod *= a[i] ^ a[j];
-            if (prod == 0) {
-                if (l == 0) {
-                    cout << "YES\n";
-                } else 
-                    cout << "NO\n";
-                return;
-            } else 
-            if (prod > r) {
-                cout << "NO\n"; return;
-            }
-        }
-    }
-    if (prod >= l && prod <= r) {
-        cout << "YES\n";
-    } else {
-        cout << "NO\n";
+void dfs(int u) {
+    vis[u] = true;
+    for (auto v: adj[u]) {
+        if (vis[v]) continue;
+        dfs(v);
     }
 }
 
+void solve() {
+    int n; see(n);
+    adj.clear(); adj.resize(n + 1);
+    vis.clear(); vis.resize(n + 1, 0);
+	vector<int> a(2 * n);
+    for (int &e: a) see(e);
+    ll ans = 1;
+    for (int i = 0; i < n; ++i) {
+        adj[a[i]].push_back(a[i + n]);
+        adj[a[i + n]].push_back(a[i]);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (vis[i]) continue;
+        add(ans, ans);
+        dfs(i);
+    }
+    cout << ans << '\n';
+}
+
 /*
-	
+	no numbers on the same column or row are the same
+    able to swap the numbers in any column
+    the number of possible solved configurations 
+    of the puzzle 
+    he could achieve from an initial 
+    solved configuration
+    by swapping numbers in a column.
+    
+    3 8 7 5 1 2 4 6
+    2 6 5 1 4 3 7 8
+
+    3 2 1 4
+    1 4 2 3
+
 */
 
 int32_t main() {

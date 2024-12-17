@@ -26,6 +26,7 @@ const int lg2 = 20;
 const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
+const double esp = 1e-9;
 
 bool cmp(pair<int, int> a, pair<int, int> b) {
 	return a.second < b.second;
@@ -68,44 +69,46 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
-void solve() {
-	ll n, l, r;
-    cin >> n >> l >> r;
-    vector<ll> a(n);
-    for (ll &e : a) cin >> e;
+struct Point {
+    ll x, y, w;
+    ll val = 0;
+    bool operator < (const Point &a) const {
+        return val < a.val;
+    }
+};
 
+double sqr(ll x) {
+    return double(1) * x * x;
+}
+
+void solve() {
+	int n, q; cin >> n >> q;
+    vector<Point> a(n);
+    for (auto &e: a) {
+        cin >> e.x >> e.y >> e.w;
+    }
+    for (auto &e: a) {
+        e.val = sqr(e.x) + sqr(e.y);
+    }
+    auto cmp = [&](Point a, Point b) {
+        return a.val < b.val;
+    };
     sort(all(a));
 
-    bool flag = false;
-    for (int i = 0; i < n - 1; ++i) 
-        if (a[i] == a[i + 1]) flag = true;
-    
-    if (flag) {
-        if (l == 0) cout << "YES\n"; 
-        else cout << "NO\n";
-        return;
+    vector<ll> prefix(n + 1, 0);
+    for (int i = 1; i <= n; ++i) {
+        prefix[i] += prefix[i - 1] + a[i - 1].w;
     }
 
-    ll prod = 1;
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            prod *= a[i] ^ a[j];
-            if (prod == 0) {
-                if (l == 0) {
-                    cout << "YES\n";
-                } else 
-                    cout << "NO\n";
-                return;
-            } else 
-            if (prod > r) {
-                cout << "NO\n"; return;
-            }
-        }
-    }
-    if (prod >= l && prod <= r) {
-        cout << "YES\n";
-    } else {
-        cout << "NO\n";
+    while (q--) {
+        Point r; cin >> r.val;
+		r.val = sqr(r.val);
+        int it = upper_bound(all(a), r, cmp) - a.begin();
+		// cout << it << '\n';
+		if (it == 0 && a[it].val - r.val > esp) {
+			cout << 0 << '\n';
+		} else 
+        	cout << prefix[it] << '\n';
     }
 }
 
@@ -124,10 +127,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	int tc; cin >> tc;
-	while (tc--) {
+	// int tc; cin >> tc;
+	// while (tc--) {
 		solve();
-	}
+	// }
 
 	return 0;
 }

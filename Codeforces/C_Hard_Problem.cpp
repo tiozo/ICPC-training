@@ -69,48 +69,32 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	ll n, l, r;
-    cin >> n >> l >> r;
-    vector<ll> a(n);
-    for (ll &e : a) cin >> e;
-
-    sort(all(a));
-
-    bool flag = false;
-    for (int i = 0; i < n - 1; ++i) 
-        if (a[i] == a[i + 1]) flag = true;
-    
-    if (flag) {
-        if (l == 0) cout << "YES\n"; 
-        else cout << "NO\n";
-        return;
+	int m, a, b, c; cin >> m >> a >> b >> c;
+    int ans = 0;
+    if (m >= a) {
+        ans += a;
+    } else {
+        ans += m;
     }
-
-    ll prod = 1;
-    for (int i = 0; i < n; ++i) {
-        for (int j = i + 1; j < n; ++j) {
-            prod *= a[i] ^ a[j];
-            if (prod == 0) {
-                if (l == 0) {
-                    cout << "YES\n";
-                } else 
-                    cout << "NO\n";
-                return;
-            } else 
-            if (prod > r) {
-                cout << "NO\n"; return;
-            }
+    if (m >= b) {
+        ans += b;
+    } else {
+        ans += m;
+    }
+    int lt = 2 * m - ans;
+    if (lt > 0) {
+        if (lt >= c) {
+            ans += c;
+        } else {
+            ans = 2 * m;
         }
     }
-    if (prod >= l && prod <= r) {
-        cout << "YES\n";
-    } else {
-        cout << "NO\n";
-    }
+    cout << ans << '\n';
 }
 
 /*
-	
+	1 2 3 4 ... m
+    1 2 3 4 ... m
 */
 
 int32_t main() {
