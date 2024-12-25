@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,42 +69,39 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+	int n, m, q; see(n, m, q);
+    vector<int> a(m);
+    unordered_map<int, int> cnt;
+    for (int i = 1; i <= n; ++i) 
+        cnt[i] = 0;
+    for (int &e: a) cin >> e, cnt[e]--;
+    for (int i = 0; i < q; ++i) {
+        int x; cin >> x;
+        cnt[x]++;
     }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    if (q < n - 1) {
+        for (int i = 0; i < m; ++i)
+            cout << 0;
+        cout << '\n'; return;
+    }
+    if (q > n - 1) {
+        for (int i = 0; i < m; ++i) 
+            cout << 1;
+        cout << '\n'; return;
+    }
+    for (int i = 0; i < m; ++i) {
+        if (cnt[a[i]] == 0) {
+            cout << 0;
+        } else 
+            cout << 1;
+    }
+    cout << '\n';
 }
 
 /*
-	111000
+	+ if k < n - 1 -> 0
+    + if k >= n - 1 -> 1
+
 */
 
 int32_t main() {
@@ -130,6 +127,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

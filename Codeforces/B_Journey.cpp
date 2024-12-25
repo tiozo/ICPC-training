@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,42 +69,34 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
-    }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+	int a[3], n;
+    see(n, a[0], a[1], a[2]);
+    int cnt = 0;
+    int maxDay = a[0] + a[1] + a[2];
+    int lt = n % maxDay;
+    int Days = floor(1.0 * n / maxDay) * 3;
+    if (0 < lt && lt <= a[0]) cnt = 1;
+    if (a[0] < lt && a[0] + a[1] >= lt) cnt = 2;
+    if (a[0] + a[1] < lt && a[0] + a[1] + a[2] >= lt) cnt = 3;
+    cout << Days + cnt << '\n';
 }
 
 /*
-	111000
+	x * a + y * b + z * c >= n
+    12 / 1 = 12
+    12 / 5 = 2
+    12 / 3 = 4
+    a b c
+    11 % 5 = 1
+    12 - 1 = 11
+    11 - 5 = 6
+    6 - 3 = 3
+    3 - 1 = 2
+    2 - 5 = 0
+    12 / 9 = 1
+    3 / 6 = 0
+    16 3 4 1 
+    16 / 8 = 2
 */
 
 int32_t main() {
@@ -130,6 +122,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

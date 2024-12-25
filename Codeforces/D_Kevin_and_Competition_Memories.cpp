@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,42 +69,36 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+	int n, m; see(n, m);
+    vector<int> a(n, -1);
+    int mxRate = 0;
+    for (int &e: a) {
+        cin >> e; ckmax(e, a[0]);
     }
+    sort(all(a));
 
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    vector<int> b(m);
+    for (int &e: b) {
+        cin >> e;
+        if (e <= a[0]) e = inf;
+    }
+    sort(all(b), greater<>());
+    
+    for (int &e: b) {
+        e = a.end() - lower_bound(all(a), e);
+    }
+    for (int k = 1; k <= m; ++k) {
+        ll ans = 0;
+        for (int i = k - 1; i < m; i += k) {
+            ans += b[i] + 1;
+        }
+        put(ans);
+    }
+    cout << '\n';
 }
 
 /*
-	111000
+	
 */
 
 int32_t main() {
@@ -130,6 +124,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

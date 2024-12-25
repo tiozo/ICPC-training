@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,42 +69,51 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+    int n, k; see(n, k);
+    vector<ll> a(n);
+    /// log100(1e16) ~~ 8 -> the K is somewhat nulsense ?
+    /// the largest step is max(logk(a[i]))
+    for (auto &e: a) cin >> e;
+    
+    sort(all(a));
+    auto logk = [&](ll val) {
+        ll res = 0;
+        while (val) {
+            val /= k; ++res;
+        }
+        return res;
+    };
+    bool flag = false;
+    int maxBits = logk(a.back()) + 1;
+    vector<int> vis(maxBits + 1, 0);
+    for (int i = 0; i < n; ++i) {
+        int times = logk(a[i]);
+        int pos = 0; 
+        while (a[i]) {
+            vis[pos++] += a[i] % k;
+            a[i] /= k; 
+        }
     }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    for (int i = 0; i < maxBits; ++i) {
+        if (vis[i] > 1) {
+            flag = true;
+        }
+    } 
+    if (flag) {
+        cout << "NO\n"; 
+    } else {
+        cout << "YES\n";
+    }
+    // cout << 59058 % 9 << '\n';
 }
 
 /*
-	111000
+    k = 100
+	1 1 1 1
+
+    3 9
+    0 59049 810
+
 */
 
 int32_t main() {
@@ -130,6 +139,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

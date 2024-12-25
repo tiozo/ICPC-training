@@ -1,55 +1,31 @@
-def is_valid_grid(n, m, grid):
-    for i in range(n):
-        for j in range(m):
-            if grid[i][j] not in "RW":
-                return False
-            if grid[i][j] == 'R':
-                if (i > 0 and grid[i-1][j] == 'R') or (i < n-1 and grid[i+1][j] == 'R') or (j > 0 and grid[i][j-1] == 'R') or (j < m-1 and grid[i][j+1] == 'R'):
-                    return False
-            elif grid[i][j] == 'W':
-                if (i > 0 and grid[i-1][j] == 'W') or (i < n-1 and grid[i+1][j] == 'W') or (j > 0 and grid[i][j-1] == 'W') or (j < m-1 and grid[i][j+1] == 'W'):
-                    return False
-    return True
+t = int(input())
 
-def checker(input_data, output_file):
-    input_lines = input_data.strip().split('\n')
-    with open(output_file, 'r') as file:
-        output_lines = file.read().strip().split('\n')
+def xor_binary_strings(bin_str1, bin_str2):
+    int1 = int("".join(bin_str1), 2)
+    int2 = int("".join(bin_str2), 2)
+    
+    xor_result = int1 ^ int2
+    return xor_result 
+    
 
-    t = int(input_lines[0])
-    idx = 1
 
-    for case_num in range(t):
-        n, m = map(int, input_lines[idx].split())
-        idx += 1
-        grid = [list(input_lines[idx + i]) for i in range(n)]
-        idx += n
-
-        expected_result = output_lines[0].strip().lower()
-        output_grid = [list(output_lines[i+1].strip()) for i in range(n)]
-
-        if expected_result == 'no':
-            print(f"Test case {case_num + 1}: NO")
-            if output_lines[0].strip().lower() != 'no':
-                return f"Checker failed: Expected 'NO' but got 'YES' for test case {case_num + 1}"
-            continue
-
-        print(f"Test case {case_num + 1}: YES")
-        if not is_valid_grid(n, m, output_grid):
-            return f"Checker failed: Invalid grid for test case {case_num + 1}"
-
-    return "Checker passed all test cases."
-
-# Example usage:
-input_data = """2
-3 3
-R..
-.W.
-...
-2 2
-RW
-.WR"""
-output_file = "output.out"
-
-result = checker(input_data, output_file)
-print(result)
+for _ in range(t):
+    s = list(input())
+    n = len(s)
+    
+    best_l1, best_r1, best_l2, best_r2 = 1, 1, 1, n
+    
+    if "0" in s:
+        highest = 0
+        index_0 = s[s.index("0"):]
+        first_o = len(index_0)
+        for i in range(0,n-first_o):
+            temp = s[i:i+first_o]
+            nums = xor_binary_strings(index_0,temp)
+            if  nums > highest:
+                best_l1, best_r1 = i+1, i+first_o
+                highest = nums
+    else:
+        best_l1, best_r1 = n,n
+            
+    print(best_l1, best_r1, best_l2, best_r2)

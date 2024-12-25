@@ -92,8 +92,47 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
+struct Line {
+    int l, r, id; 
+    Line(int l = 0, int r = 0): l(l), r(r) {};
+    bool operator < (const Line& a) {
+        return l != a.l ? l < a.l : -r < -a.r;
+    }
+};
+
 void solve() {
-	
+    int n; see(n);
+    vector<Line> a(n);
+    int idx = 0;
+    for (auto &[l, r, id]: a) 
+        cin >> l >> r, id = idx++;
+    map<pair<int, int>, int> cnt;
+    for (auto [l, r, id]: a) {
+        cnt[{l, r}]++;
+    }
+    vector<int> dup(n, 0);
+    for (auto [l, r, id]: a) {
+        if (cnt[{l, r}] >= 2) {
+            dup[id] = 1;
+        }
+    }
+    vector<int> ans(n, 0);
+    for (int it = 0; it < 2; ++it) {
+        for (auto &[l, r, id]: a) 
+            l *= -1, r *= -1, swap(l, r);
+        sort(all(a));
+        set<int> s;
+        for (auto &[l, r, id] : a) {
+            if (!dup[id]) {
+                auto iter = s.lower_bound(r);
+                if (iter != s.end()) {
+                    ans[id] += *iter - r;
+                } 
+            }
+            s.insert(r);
+        }
+    }
+    for (int e: ans) cout << e << '\n';
 }
 
 /*
@@ -111,10 +150,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	// int tc; cin >> tc;
-	// while (tc--) {
+	int tc; cin >> tc;
+	while (tc--) {
 		solve();
-	// }
+	}
 
 	return 0;
 }

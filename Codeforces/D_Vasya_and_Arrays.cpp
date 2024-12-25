@@ -42,15 +42,6 @@ struct chash {
     }
 };
 
-ll gcd(ll x, ll y) {
-    if (!y) return x;
-    return gcd(y, x % y);
-}
-
-ll lcm(ll x, ll y) {
-    return (x * y) / gcd(x, y);
-}
-
 bool cmp(pair<int, int> a, pair<int, int> b) {
 	return a.second < b.second;
 }
@@ -93,11 +84,65 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	
+	int n, m; see(n);
+    ll sa = 0, sb = 0;
+    vector<int> a(n);
+    for (int &e: a) see(e), sa += e;
+    see(m);
+    vector<int> b(m);
+    for (int &e: b) see(e), sb += e;
+    
+    if (sa != sb) {
+        cout << "-1\n"; return;
+    }
+    int cnt = 0;
+    int i = 0, j = 0;
+    while (i < n && j < m) {
+        // cerr << i << ' ' << j << '\n';
+        if (a[i] == b[j]) {
+            ++i, ++j; ++cnt; continue;
+        }
+        ll sumA = a[i], sumB = b[j];
+        int ii = i + 1, jj = j + 1;
+        while (sumA != sumB) {
+            // cerr << ii << ' ' << jj << ' ' << sumA << ' ' << sumB << '\n';
+            while (ii < n && sumA < sumB) sumA += a[ii], ++ii;
+            while (jj < m && sumA > sumB) sumB += b[jj], ++jj;
+        }
+        // cerr << sumA << ' ' << sumB << '\n';
+        i = ii, j = jj; ++cnt;
+    }
+    cout << cnt << '\n';
 }
 
 /*
-	
+	statement summary:
+    perform operations: 
+        + take some consecutive subsegment
+            replace with a single elements x
+        + x = sum of elements in the subsegment.
+    array A = B if and only: 
+        + len(a) = len(b)
+        + a[i] = b[i] (1 <= i <= len(a) = len(b))
+    operations can be perform on A or B
+    make A = B with 'max(length)'
+
+    |      |
+    11 10 7
+    11 10 7
+    max = 3
+    ans = -1 only when sum(A) != sum(B)
+
+    if sum(A) = sum(B) 
+        + smaller result = 1
+    
+    sum = 40
+    21 5 9 3 23
+    20 20
+
+    |
+    a[i]   
+    b[i] 
 */
 
 int32_t main() {

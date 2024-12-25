@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -68,43 +68,69 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
-void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+ll point(string s1, string s2) {
+    ll res = 0;
+    ll points = 1;
+    // cout << s1 << ' ';
+    int i = sz(s1) - 1, j = sz(s2) - 1;
+    while (i >= 0 && j >= 0) {
+        if (s1[i] != s2[j]) {
+            s1[i] = '1';
+        } else {
+            s1[i] = '0';
+        }
+        --i, --j;
     }
+    // cout << s1 << '\n';
+    for (int i = sz(s1) - 1; i >= 0; --i) {
+        if (s1[i] == '1')
+            res += points * 2; ++points;
+    }
+    return res;
+}
 
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+void solve() {
+	string s; cin >> s;
+    /// pos of first 0
+    int pos = 0;
+    for (auto c: s) {
+        if (c == '0') break;
+        ++pos;
+    }
+    // cout << pos << '\n';
+    int n = sz(s);
+    int mxLen = sz(s) - pos;
+    if (mxLen == 0) {
+        cout << 1 << ' ' << 1 << ' ' << 1 << ' ' << n << '\n'; return;
+    }
+    int best = -1;
+    vector<int> cur;
+    for(int st = 0; st + mxLen <= n; st++){
+        vector<int> x;
+        for(char c : s) x.push_back(c - '0');
+        for(int i = 0; i < mxLen; i++){
+            if(s[st+i] == '1') x[n - mxLen + i] ^= 1;
+        }
+        if(x > cur){
+            cur = x;
+            best = st;
+        }
+    }
+    cout << 1 << ' ' << n << ' ' << (best + 1) << ' ' << (best + mxLen) << '\n';
 }
 
 /*
-	111000
+	11101
+    10
+    11000001000
+      1 
+
+    1101
+    4301
+
+    10
+    01
+    21    
 */
 
 int32_t main() {
@@ -120,6 +146,7 @@ int32_t main() {
 
 	int tc; cin >> tc;
 	while (tc--) {
+        // DEBUG
 		solve();
 	}
 
@@ -130,6 +157,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

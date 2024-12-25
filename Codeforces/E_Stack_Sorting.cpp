@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,59 +69,81 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
+	int n, k; cin >> n >> k;
+    vector<int> a(k);
+    for (int &e: a) cin >> e;
 
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+    vector<int> ans;
+    stack<int> s;
+    s.push(N), s.push(n + 1);
+    int curValue = 1;
+    for (int i = 0; i < n; ++i) {
+        if (i >= k)
+            a.push_back(s.top() - 1);
+        s.push(a[i]);
+        while (!s.empty() && s.top() == curValue) {
+            ++curValue;
+            s.pop();
+        }
     }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    if (sz(s) > 1) {
+        cout << "-1\n";
+    } else {
+        for (int e: a) {
+            cout << e << ' ';
+        }
+    }
 }
 
 /*
-	111000
+	3 4 1 2 5 6
+
+    a
+    3 4 1 2 5 6
+    s
+    3 4 
+    b
+    1 2
+    
+    5 2
+    4 2 
+    4 2 1 3 5
+    1 2 3 4 5
+
+    4 3 2 1 6 5 
+
+    6 4 2 1 3 5
+    6 4 3 1 2 5
+    2 1 3 4 
+    1 
+
+    3 2 6 4 1 5
+    3 2 6
+
+    6 3 4 1 2 5
+
+    x and y
+    -> abs(x - y) = 1 
+
+    O(n log^2 n )
+    O(n log n sqrt n)
 */
 
 int32_t main() {
 
-	// if (fopen("input.inp", "r")) {
-	// 	freopen("input.inp", "r", stdin);
-	// 	freopen("output.out", "w", stdout);
-	// }
+	if (fopen("input.inp", "r")) {
+		freopen("input.inp", "r", stdin);
+		freopen("output.out", "w", stdout);
+	}
 	
 	ios::sync_with_stdio(NULL);
 	cin.tie(0); cout.tie(0);
 
 
-	int tc; cin >> tc;
-	while (tc--) {
+	// int tc; cin >> tc;
+	// while (tc--) {
 		solve();
-	}
+	// }
 
 	return 0;
 }
@@ -130,6 +152,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

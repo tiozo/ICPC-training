@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -68,43 +68,76 @@ void sub(ll &a, ll b) {
 		a += mod;
 }
 
+vector<vector<int>> adj;
+vector<int> vis;
+int mexVal;
+
+void addEdge(int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+}
+
+void dfs(int u) {
+    vis[u] = mexVal++;
+    for (auto v: adj[u]) {
+        if (vis[v] != -1) continue;
+        dfs(v); 
+    }
+    unordered_map<int, int> cnt;
+    for (auto v: adj[u]) {
+        ++cnt[vis[v]];
+    }
+    for (int i = 0; i <= sz(adj); ++i) {
+        if (cnt.find(i) == cnt.end()) {
+            vis[u] = i; return;
+        }
+    }
+}
+
 void solve() {
 	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
+    adj.clear(), adj.resize(n + 10);
+    vis.clear(), vis.resize(n + 10, -1);
+    mexVal = 0;
+    int x, y; see(x, y);
+    addEdge(x, y);
+    vector<int> deg(n + 1, 2);
+    deg[x]++, deg[y]++;
+    for (int i = 1; i <= n; ++i) {
 
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+        if (i > 1 && i < n) {
+            addEdge(i, i + 1);
+            addEdge(i, i - 1);
+        } else {
+            if (i == 1) {
+                addEdge(i, n);
+                addEdge(i, i + 1);
+            } else {
+                addEdge(i, 1);
+                addEdge(i - 1, i);
+            }
+        }
     }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    int u = 1, cnt = 0;
+    for (int i = 1; i <= n; ++i) {
+        if (ckmax(cnt, deg[i])) {
+            u = i;
+        }
+    }
+    dfs(u);
+    for (int i = 1; i <= n; ++i) {
+        cout << vis[i] << ' ';
+    }
+    cout << '\n';
 }
 
 /*
-	111000
+	n, x, y 
+    f[i] is friend with the ith dragon
+    0 1 2 3 4 5 6 7
+    7 = 1 
+    0 = 6
+
 */
 
 int32_t main() {
@@ -130,6 +163,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

@@ -23,7 +23,7 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
 
@@ -69,42 +69,33 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
-
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+/* GREEDY WAY */
+	// int x; cin >> x;
+    // int cnt = 0;
+    // while (x) {
+    //     int mxDigit = 0; 
+    //     int tmp = x;
+    //     while (tmp) {
+    //         int digit = tmp % 10;
+    //         tmp /= 10; ckmax(mxDigit, digit);
+    //     }
+    //     x -= mxDigit; ++cnt;
+    // }
+    // cout << cnt << '\n';
+/* DP WAY */ 
+    int x; cin >> x;
+    vector<int> dp(x + 1, inf);
+    dp[0] = 0;
+    for (int i = 0; i <= x; ++i) {
+        for (auto c: to_string(i)) {
+            dp[i] = min(dp[i], dp[i - c + '0'] + 1);
+        }
     }
-
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    cout << dp[x] << '\n';
 }
 
 /*
-	111000
+	
 */
 
 int32_t main() {
@@ -118,10 +109,10 @@ int32_t main() {
 	cin.tie(0); cout.tie(0);
 
 
-	int tc; cin >> tc;
-	while (tc--) {
+	// int tc; cin >> tc;
+	// while (tc--) {
 		solve();
-	}
+	// }
 
 	return 0;
 }
@@ -130,6 +121,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */

@@ -23,9 +23,24 @@ template<typename... T>
 void put(T&&... args) { ((cout << args << " "), ...);}
 
 const int lg2 = 20;
-const int N = 3e5 + 10;
+const int N = 2010;
 const int mod = 1e9 + 7;
 const ll inf = 0x3f3f3f3f3f3f3f;
+
+struct chash {
+    static uint64_t splitmix64(uint64_t x) {
+        // http://xorshift.di.unimi.it/splitmix64.c
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+ 
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+};
 
 bool cmp(pair<int, int> a, pair<int, int> b) {
 	return a.second < b.second;
@@ -69,42 +84,58 @@ void sub(ll &a, ll b) {
 }
 
 void solve() {
-	int n; cin >> n;
-	string s; cin >> s;
-	bool flag = false;
+	int n, d; see(n, d);
 
-	int cnt = 0, cnt0 = 0, cnt1 = 0;
-	for (int i = 0; i < n; ++i) {
-		if (s[i] == '1') ++cnt1;
-		else ++cnt0;
-	}
-
-	if (n % 2) {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 1) {
-			cout << "NO\n"; return;
-		}
-	} else {
-		int maxDif = abs(cnt0 - cnt1);
-		if (maxDif > 0) {
-			cout << "NO\n"; return;
-		}
-	}
-	cnt0 = cnt1 = 0;
-    for (int i = 0; i + 1 < n; ++i) {
-        if (s[i] == s[i + 1]) {
-			if (s[i] == '0') ++cnt0;
-			else ++cnt1;
-		}
+    set<int> ans;
+    ans.insert(1);
+    if (d == 3) {
+        ans.insert(3);
+    } else if (d == 5) {
+        ans.insert(5);
+    } else if (d == 6) {
+        ans.insert(3);
+    } else if (d == 7) {
+        ans.insert(7);
+    } else if (d == 9) {
+        ans.insert(3);
+        ans.insert(9);
     }
+    if (n >= 3 && n < 6) {
+        if (d == 3 || d == 6 || d == 9)
+            ans.insert(3),
+            ans.insert(7),
+            ans.insert(9);
+        else 
+            ans.insert(3);
+            ans.insert(7);
+    } else if (n >= 6) {
+        ans.insert(3);
+        ans.insert(7);
+        ans.insert(9);
+    }
+    std::vector<int> ansList(ans.begin(), ans.end());
+    std::sort(ansList.begin(), ansList.end());
 
-	if (cnt0 > 1 || cnt1 > 1) flag = true;
-
-	cout << (!flag ? "YES\n" : "NO\n");
+    for (int e: ans) put(e);
+    
+    cout << '\n';
 }
 
 /*
-	111000
+	6 2!
+    66
+    1 
+    2 when d % 2 == 0
+    3 when d = 3 d = 6 d = 9
+    4 when d = 4, d = 8
+    5 when d = 5 
+    6 when vis[2] = true and vis[3] = true
+    7 when d = 7 d = 5 if n >= 5
+    8 when ddd % 8 = 0
+    9 when d = 9 
+    d = 4 n = 4
+    55555
+    1 2 6 24 120
 */
 
 int32_t main() {
@@ -130,6 +161,4 @@ int32_t main() {
 	nice bin string
 	1 must go with 0
 	0 must go with 1
-
-	0110110
  */
